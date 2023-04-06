@@ -3,6 +3,6 @@ import itensControllers from "../controllers/itensControllers.js";
 
 const itensRoutes = Router();
 
-itensRoutes.get('/all', itensControllers.listAllItens);
+itensRoutes.get('/', itensControllers.listAllItens);
 
 export default itensRoutes;
