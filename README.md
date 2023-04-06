@@ -17,7 +17,7 @@ To run the API, execute the following command in the root directory:
 
 <h3>The following are the endpoints available in this API:</h3>
 
-GET: /itens - This route returns all movies and series added by the user.
+<strong>GET: /itens</strong> - This route returns all movies and series added by the user.
 
 POST: /itens - This route allows the user to add movies and series, including their genre, streaming platform and status (want to watch, watching, watched). It requires a JSON body with the following format:
 
