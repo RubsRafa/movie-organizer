@@ -22,7 +22,6 @@ async function listAllItens() {
 }
 
 async function postItem({ name }: AddItemType) {
-  console.log(name)
   return await db.query('INSERT INTO itens (name) VALUES ($1);', [name]);
 }
 
@@ -46,7 +45,6 @@ async function updateItem({ id, status }: AddItemType) {
 }
 
 async function deleteItem ({ id }: AddItemType) {
-  console.log('deleta item')
   return db.query('DELETE FROM itens WHERE id = $1;', [id]);
 }
 

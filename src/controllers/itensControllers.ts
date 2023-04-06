@@ -43,7 +43,7 @@ async function deleteItem(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params as IdType;
     
     try {
-        console.log('controller')
+        
         await itensServices.deleteItem({ id });
         return res.sendStatus(httpStatus.OK)
         
