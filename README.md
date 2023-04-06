@@ -19,7 +19,7 @@ To run the API, execute the following command in the root directory:
 
 <strong>GET: /itens</strong> - This route returns all movies and series added by the user.
 
-POST: /itens - This route allows the user to add movies and series, including their genre, streaming platform and status (want to watch, watching, watched). It requires a JSON body with the following format:
+<strong>POST: /itens</strong> - This route allows the user to add movies and series, including their genre, streaming platform and status (want to watch, watching, watched). It requires a JSON body with the following format:
 
 ```
 {
@@ -30,7 +30,7 @@ POST: /itens - This route allows the user to add movies and series, including th
 }
 ```
 
-PUT: /itens/:id - This route receives the ID of the movie or series and updates its status. It requires a JSON body with the following format:
+<strong>PUT: /itens/:id</strong> - This route receives the ID of the movie or series and updates its status. It requires a JSON body with the following format:
 
 ```
 {
@@ -38,4 +38,4 @@ PUT: /itens/:id - This route receives the ID of the movie or series and updates 
 }
 ```
 
-DELETE: /itens/:id - This route deletes the movie or series by its ID.
+<strong>DELETE: /itens/:id</strong> - This route deletes the movie or series by its ID.
