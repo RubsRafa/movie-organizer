@@ -5,12 +5,13 @@ The Wishlist API is an API that allows the user to store information about movie
 <h2>Installation</h2>
 To use this API, you need to have Node.js installed on your machine. Clone this repository, navigate to the root directory, and run the following command:
 
-<em><strong>npm install</strong></em>
+```npm install```
 
 This command will install all the necessary dependencies to run this API.
 
 <h2>Usage</h2>
 To run the API, execute the following command in the root directory:
-<em><strong>npm start</strong></em>
+
+```npm start```
 
 The following are the endpoints available in this API:
