@@ -15,3 +15,26 @@ To run the API, execute the following command in the root directory:
 ```npm start```
 
 The following are the endpoints available in this API:
+
+GET: /itens - This route returns all movies and series added by the user.
+
+POST: /itens - This route allows the user to add movies and series, including their genre, streaming platform and status (want to watch, watching, watched). It requires a JSON body with the following format:
+
+```
+{
+  "name": "Meet the Robinsons",
+  "genre": 3, //Animation
+  "platform": 5, //Disney+
+  "status": 3 //want to watch
+}
+```
+
+PUT: /itens/:id - This route receives the ID of the movie or series and updates its status. It requires a JSON body with the following format:
+
+```
+{
+  "status": 2 // "watching"
+}
+```
+
+DELETE: /items/:id - This route deletes the movie or series by its ID.
