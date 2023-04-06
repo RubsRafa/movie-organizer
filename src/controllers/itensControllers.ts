@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import itensServices from "../services/itensServices.js";
 import httpStatus from "http-status";
-import { ItensFormat } from "../protocols/itensProtocols.js";
+import { AddItemType, ItensFormat } from "../protocols/itensProtocols.js";
 
 async function listAllItens(req: Request, res: Response, next: NextFunction) {
     try {
@@ -13,7 +13,20 @@ async function listAllItens(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function postItem(req: Request, res: Response, next: NextFunction) {
+    const { name, genre, platform, status } = req.body as AddItemType;
+ 
+    try {
+        const itemAdded: ItensFormat = await itensServices.postItem({ name, genre, platform, status });
+        return res.status(httpStatus.OK).send(itemAdded);
+        
+    } catch (err) {
+        next(err);
+    }
+}
+
 
 export default {
-    listAllItens
+    listAllItens,
+    postItem
 }
