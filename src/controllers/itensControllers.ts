@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import itensServices from "../services/itensServices.js";
 import httpStatus from "http-status";
-import { AddItemType, ItensFormat } from "../protocols/itensProtocols.js";
+import { AddItemType, IdType, ItensFormat } from "../protocols/itensProtocols.js";
 
 async function listAllItens(req: Request, res: Response, next: NextFunction) {
     try {
@@ -25,8 +25,23 @@ async function postItem(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function updateItem(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params as IdType;
+    const { status } = req.body as AddItemType;
+
+    try {
+
+        const itemUpdated: ItensFormat = await itensServices.updateItem({ id, status });
+        return res.status(httpStatus.OK).send(itemUpdated);
+        
+    } catch (err) {
+        next(err)
+    }
+}
+
 
 export default {
     listAllItens,
-    postItem
+    postItem,
+    updateItem
 }

@@ -24,7 +24,18 @@ async function postItem({ name, genre, platform, status }: AddItemType): Promise
 
 }
 
+async function updateItem({ id, status }: AddItemType) {
+    const { rowCount }: { rowCount: number } = await itensRepositories.findItem({ id });
+    if (!rowCount) throw errors.notFoundError('This item was not found');
+
+    await itensRepositories.updateItem({ id, status })
+
+    const { rows: [itemUpdated] }: { rows: ItensFormat[]} = await itensRepositories.findItem({ id });
+    return itemUpdated
+}
+
 export default {
     listAllItens,
-    postItem
+    postItem,
+    updateItem
 }

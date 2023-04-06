@@ -6,6 +6,7 @@ import schemas from "../schemas/itensSchemas.js";
 const itensRoutes = Router();
 
 itensRoutes.get('/', itensControllers.listAllItens);
-itensRoutes.post('/', validateSchema(schemas.itemSchema), itensControllers.postItem)
+itensRoutes.post('/', validateSchema(schemas.itemSchema), itensControllers.postItem);
+itensRoutes.put('/:id', itensControllers.updateItem)
 
 export default itensRoutes;

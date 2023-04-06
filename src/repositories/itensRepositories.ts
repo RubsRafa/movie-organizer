@@ -41,10 +41,15 @@ async function findItem({ id }: AddItemType) {
   return db.query(`SELECT i.id, i.name, g.genre, p.name AS platform, s.status FROM itens i JOIN (SELECT ig.id_item AS product, ig.id_genre, ip.id_platform, it.id_status FROM itens_genres ig JOIN itens_platforms ip ON ip.id_item = ig.id_item JOIN itens_status it ON it.id_item = ig.id_item) AS item_info ON item_info.product = i.id JOIN genres g ON g.id = item_info.id_genre JOIN platforms p ON p.id = item_info.id_platform JOIN status s ON s.id = item_info.id_status WHERE i.id = $1;`, [id])
 }
 
+async function updateItem({ id, status }: AddItemType) {
+  return db.query('UPDATE itens_status SET id_status = $1 WHERE id_item = $2;', [status, id])
+}
+
 export default {
   listAllItens,
   postItem,
   addItemInfo,
   findItem,
-  findItemByName
+  findItemByName,
+  updateItem
 }

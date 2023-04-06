@@ -6,7 +6,7 @@ export type ItensFormat = {
     status: string;
 }
 export type AddItemType = {
-    id?: number,
+    id?: number | string,
     name?: string;
     genre?: number;
     platform?: number;
@@ -23,4 +23,8 @@ export type TypesOfSchema = {
 export type ErrorsType = {
     name: string;
     message: string | string[];
+}
+
+export type IdType = {
+    id: string;
 }
