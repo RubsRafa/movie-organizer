@@ -37,4 +37,4 @@ PUT: /itens/:id - This route receives the ID of the movie or series and updates 
 }
 ```
 
-DELETE: /items/:id - This route deletes the movie or series by its ID.
+DELETE: /itens/:id - This route deletes the movie or series by its ID.
