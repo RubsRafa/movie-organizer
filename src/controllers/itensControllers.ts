@@ -39,9 +39,23 @@ async function updateItem(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function deleteItem(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params as IdType;
+    
+    try {
+        console.log('controller')
+        await itensServices.deleteItem({ id });
+        return res.sendStatus(httpStatus.OK)
+        
+    } catch (err) {
+       next(err) 
+    }
+}
+
 
 export default {
     listAllItens,
     postItem,
-    updateItem
+    updateItem,
+    deleteItem
 }

@@ -34,8 +34,19 @@ async function updateItem({ id, status }: AddItemType) {
     return itemUpdated
 }
 
+async function deleteItem({ id } : AddItemType): Promise<void> {
+    console.log('entrou no delete', id)
+    const { rowCount }: { rowCount: number } = await itensRepositories.findItem({ id });
+    console.log('verificou se item existe', rowCount)
+    if (!rowCount) throw errors.notFoundError('This item was not found');
+    console.log('item existe, vamos deletar')
+    await itensRepositories.deleteItem({ id });
+    console.log('item deletado')
+}
+
 export default {
     listAllItens,
     postItem,
-    updateItem
+    updateItem,
+    deleteItem
 }

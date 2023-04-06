@@ -7,6 +7,7 @@ const itensRoutes = Router();
 
 itensRoutes.get('/', itensControllers.listAllItens);
 itensRoutes.post('/', validateSchema(schemas.itemSchema), itensControllers.postItem);
-itensRoutes.put('/:id', itensControllers.updateItem)
+itensRoutes.put('/:id', itensControllers.updateItem);
+itensRoutes.delete('/:id', itensControllers.deleteItem);
 
 export default itensRoutes;

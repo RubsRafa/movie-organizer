@@ -45,11 +45,17 @@ async function updateItem({ id, status }: AddItemType) {
   return db.query('UPDATE itens_status SET id_status = $1 WHERE id_item = $2;', [status, id])
 }
 
+async function deleteItem ({ id }: AddItemType) {
+  console.log('deleta item')
+  return db.query('DELETE FROM itens WHERE id = $1;', [id]);
+}
+
 export default {
   listAllItens,
   postItem,
   addItemInfo,
   findItem,
   findItemByName,
-  updateItem
+  updateItem,
+  deleteItem
 }
