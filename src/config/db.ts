@@ -8,3 +8,7 @@ const configDatabase = {
 }
 
 export const db = new Pool(configDatabase)
+
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
+export default prisma;

@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model genres {
+  id           Int            @id @default(autoincrement())
+  genre        String
+  itens_genres itens_genres[]
+}
+
+model itens {
+  id              Int               @id @default(autoincrement())
+  name            String
+  itens_genres    itens_genres[]
+  itens_platforms itens_platforms[]
+  itens_status    itens_status[]
+}
+
+model itens_genres {
+  id       Int    @id @default(autoincrement())
+  id_item  Int
+  id_genre Int
+  genres   genres @relation(fields: [id_genre], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_genre")
+  itens    itens  @relation(fields: [id_item], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_item")
+}
+
+model itens_platforms {
+  id          Int       @id @default(autoincrement())
+  id_item     Int
+  id_platform Int
+  itens       itens     @relation(fields: [id_item], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_item")
+  platforms   platforms @relation(fields: [id_platform], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_platform")
+}
+
+model itens_status {
+  id        Int    @id @default(autoincrement())
+  id_item   Int
+  id_status Int
+  status    status @relation(fields: [id_status], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_genre")
+  itens     itens  @relation(fields: [id_item], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_item")
+}
+
+model platforms {
+  id              Int               @id @default(autoincrement())
+  name            String
+  itens_platforms itens_platforms[]
+}
+
+model status {
+  id           Int            @id @default(autoincrement())
+  status       String
+  itens_status itens_status[]
+}
