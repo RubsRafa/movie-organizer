@@ -28,3 +28,18 @@ export type ErrorsType = {
 export type IdType = {
     id: string;
 }
+
+export type DataParams = {
+    id: number;
+    name: string;
+    genre: string;
+    platform: string;
+    status: string;
+}
+
+export type ItensSchema = {
+    name: string;
+    genre: number;
+    platform: number;
+    status: number;
+}

@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import { Request, Response, NextFunction } from "express";
-import { ErrorsType } from "../protocols/itensProtocols.js";
+import { ErrorsType } from "../protocols/itensProtocols";
 
 export function handleErrors(err: ErrorsType, req: Request, res: Response, next: NextFunction) {
     if (err.name === "ConflictError") {

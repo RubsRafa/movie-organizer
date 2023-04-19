@@ -1,25 +1,28 @@
-import errors from "../errors/index.js";
-import { AddItemType, ItensFormat } from "../protocols/itensProtocols.js";
-import itensRepositories from "../repositories/itensRepositories.js";
+import errors from "../errors/index";
+import { AddItemType, ItensFormat } from "../protocols/itensProtocols";
+import itensRepositories from "../repositories/itensRepositories";
 
 async function listAllItens() {
-
     const itens = await itensRepositories.listAllItens();
     
     return itens;
 }
 
 async function postItem({ name, genre, platform, status }: AddItemType) {
+    
     const itemExist = await itensRepositories.findItemByName({ name });
     if (itemExist) throw errors.conflictError('This item was already added');
     await itensRepositories.postItem({ name });
-
+    
     const item = await itensRepositories.findItemByName({ name });
     if (!item) throw errors.notFoundError('This item id was not found');
-
+    
+    console.log('post ainda no service', item.id, typeof(item.id), genre, typeof(genre), platform, typeof(platform), status, typeof(status))
     await itensRepositories.addItemInfo({ id: item.id, genre, platform, status });
-
+    
+    console.log('post vai sair do service')
     const itemAdded = await itensRepositories.findItem({ id: item.id });
+    console.log('retornou tudo certinho')
     return itemAdded
 
 }

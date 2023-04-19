@@ -1,5 +1,5 @@
 import { Router } from "express";
-import itensRoutes from "./itensRoutes.js";
+import itensRoutes from "./itensRoutes";
 
 const routes = Router();
 

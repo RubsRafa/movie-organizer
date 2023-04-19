@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ValidationResult, Schema } from "joi";
-import { TypesOfSchema } from "../protocols/itensProtocols.js";
-import err from '../errors/index.js'
+import { TypesOfSchema } from "../protocols/itensProtocols";
+import err from '../errors/index'
 
 export function validateSchema(schema: Schema) {
     return (req: Request, res: Response, next: NextFunction) => {

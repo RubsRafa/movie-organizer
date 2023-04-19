@@ -1,7 +1,7 @@
 import { Router } from "express";
-import itensControllers from "../controllers/itensControllers.js";
-import { validateSchema } from "../middlewares/validateSchema.js";
-import schemas from "../schemas/itensSchemas.js";
+import itensControllers from "../controllers/itensControllers";
+import { validateSchema } from "../middlewares/validateSchema";
+import schemas from "../schemas/itensSchemas";
 
 const itensRoutes = Router();
 

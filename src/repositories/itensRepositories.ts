@@ -1,8 +1,8 @@
-import prisma from "../config/db.js";
-import { AddItemType } from "../protocols/itensProtocols.js";
+import prisma from "../database/db";
+import { AddItemType, DataParams } from "../protocols/itensProtocols";
 
 async function listAllItens() {
-  let data;
+  let data: DataParams[];
   await prisma.itens.findMany({
     include: {
       itens_genres: {
@@ -69,6 +69,7 @@ async function findItemByName({ name }: AddItemType) {
 async function addItemInfo({ id, genre, platform, status }: AddItemType) {
   const id_item = Number(id)
   
+  console.log('vai add info do item', id_item, typeof(id_item), genre, typeof(genre), platform, typeof(platform), status, typeof(status))
   await prisma.itens_genres.create({
     data:{
       id_item, id_genre: genre
@@ -87,13 +88,13 @@ async function addItemInfo({ id, genre, platform, status }: AddItemType) {
     }
   });
 
-  return;
+  return 'sair do add info';
 }
 
 async function findItem({ id }: AddItemType) {
-  let data;
+  let data: DataParams;
   const id_item = Number(id);
-  return prisma.itens.findUnique({
+  return prisma.itens.findFirst({
     where: {
       id: id_item,
     },
