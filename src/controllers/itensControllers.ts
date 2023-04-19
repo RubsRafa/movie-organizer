@@ -5,7 +5,7 @@ import { AddItemType, IdType, ItensFormat } from "../protocols/itensProtocols.js
 
 async function listAllItens(req: Request, res: Response, next: NextFunction) {
     try {
-        const allItens: ItensFormat[] = await itensServices.listAllItens();
+        const allItens = await itensServices.listAllItens();
         return res.status(httpStatus.OK).send(allItens)
         
     } catch (err) {
@@ -17,7 +17,7 @@ async function postItem(req: Request, res: Response, next: NextFunction) {
     const { name, genre, platform, status } = req.body as AddItemType;
  
     try {
-        const itemAdded: ItensFormat = await itensServices.postItem({ name, genre, platform, status });
+        const itemAdded = await itensServices.postItem({ name, genre, platform, status });
         return res.status(httpStatus.OK).send(itemAdded);
         
     } catch (err) {
@@ -31,7 +31,7 @@ async function updateItem(req: Request, res: Response, next: NextFunction) {
 
     try {
 
-        const itemUpdated: ItensFormat = await itensServices.updateItem({ id, status });
+        const itemUpdated = await itensServices.updateItem({ id, status });
         return res.status(httpStatus.OK).send(itemUpdated);
         
     } catch (err) {

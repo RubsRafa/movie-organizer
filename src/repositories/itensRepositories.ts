@@ -1,51 +1,164 @@
-import { db } from "../config/db.js";
+import prisma from "../config/db.js";
 import { AddItemType } from "../protocols/itensProtocols.js";
 
 async function listAllItens() {
-  return await db.query(`
-    SELECT i.id, i.name, g.genre, p.name AS platform, s.status 
-    FROM itens i 
-    JOIN (SELECT ig.id_item AS product, ig.id_genre, ip.id_platform, it.id_status 
-        FROM itens_genres ig 
-        JOIN itens_platforms ip 
-          ON ip.id_item = ig.id_item 
-        JOIN itens_status it 
-          ON it.id_item = ig.id_item) AS item_info 
-      ON item_info.product = i.id 
-    JOIN genres g 
-      ON g.id = item_info.id_genre 
-    JOIN platforms p 
-      ON p.id = item_info.id_platform 
-    JOIN status s 
-      ON s.id = item_info.id_status;
-    `)
+  let data;
+  await prisma.itens.findMany({
+    include: {
+      itens_genres: {
+        select: {
+          genres: {
+            select: {
+              genre: true,
+            },
+          },
+        },
+      },
+      itens_platforms: {
+        select: {
+          platforms: {
+            select: {
+              name: true,
+            }
+          }
+        }
+      },
+      itens_status: {
+        select: {
+          status: {
+            select: {
+              status: true
+            }
+          },
+        },
+      },
+    }
+  })
+  .then((res) => {
+    data = res.map((i) => {
+      return {
+        id: i.id,
+        name: i.name,
+        genre: i.itens_genres[0].genres.genre,
+        platform: i.itens_platforms[0].platforms.name,
+        status: i.itens_status[0].status.status
+      }
+    })
+    return data;
+  })
+  return data;
+
 }
 
 async function postItem({ name }: AddItemType) {
-  return await db.query('INSERT INTO itens (name) VALUES ($1);', [name]);
+  return prisma.itens.create({
+    data: {
+      name
+    }
+  })
 }
 
 async function findItemByName({ name }: AddItemType) {
-  return await db.query('SELECT * FROM itens WHERE name = $1;', [name])
+  return prisma.itens.findUnique({
+    where: {
+      name
+    }
+  })
 }
 
 async function addItemInfo({ id, genre, platform, status }: AddItemType) {
-  await db.query(`INSERT INTO itens_genres (id_item, id_genre) VALUES ($1, $2);`, [id, genre]);
-  await db.query(`INSERT INTO itens_platforms (id_item, id_platform) VALUES ($1, $2);`, [id, platform]);
-  await db.query(`INSERT INTO itens_status (id_item, id_status) VALUES ($1, $2);`, [id, status]);
+  const id_item = Number(id)
+  
+  await prisma.itens_genres.create({
+    data:{
+      id_item, id_genre: genre
+    }
+  });
+  
+  await prisma.itens_platforms.create({
+    data:{
+      id_item, id_platform: platform
+    }
+  });
+  
+  await prisma.itens_status.create({
+    data:{
+      id_item, id_status: status
+    }
+  });
+
   return;
 }
 
 async function findItem({ id }: AddItemType) {
-  return db.query(`SELECT i.id, i.name, g.genre, p.name AS platform, s.status FROM itens i JOIN (SELECT ig.id_item AS product, ig.id_genre, ip.id_platform, it.id_status FROM itens_genres ig JOIN itens_platforms ip ON ip.id_item = ig.id_item JOIN itens_status it ON it.id_item = ig.id_item) AS item_info ON item_info.product = i.id JOIN genres g ON g.id = item_info.id_genre JOIN platforms p ON p.id = item_info.id_platform JOIN status s ON s.id = item_info.id_status WHERE i.id = $1;`, [id])
+  let data;
+  const id_item = Number(id);
+  return prisma.itens.findUnique({
+    where: {
+      id: id_item,
+    },
+    include: {
+      itens_genres: {
+        select: {
+          genres: {
+            select: {
+              genre: true,
+            },
+          },
+        },
+      },
+      itens_platforms: {
+        select: {
+          platforms: {
+            select: {
+              name: true,
+            }
+          }
+        }
+      },
+      itens_status: {
+        select: {
+          status: {
+            select: {
+              status: true
+            }
+          },
+        },
+      },
+    }
+  })
+  .then((res) => {
+    data = {
+        id: res.id,
+        name: res.name,
+        genre: res.itens_genres[0].genres.genre,
+        platform: res.itens_platforms[0].platforms.name,
+        status: res.itens_status[0].status.status
+      }
+
+    return data;
+  });
 }
 
 async function updateItem({ id, status }: AddItemType) {
-  return db.query('UPDATE itens_status SET id_status = $1 WHERE id_item = $2;', [status, id])
+  const id_item = Number(id);
+  return prisma.itens_status.update({
+    where: {
+    id_item
+    },
+    data: {
+      id_status: status,
+    }
+  })
 }
 
 async function deleteItem ({ id }: AddItemType) {
-  return db.query('DELETE FROM itens WHERE id = $1;', [id]);
+  const id_item = Number(id)
+  return prisma.itens.delete({
+    where: {
+      id: id_item
+    }
+  })
 }
 
 export default {

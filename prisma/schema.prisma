@@ -15,7 +15,7 @@ model genres {
 
 model itens {
   id              Int               @id @default(autoincrement())
-  name            String
+  name            String            @unique
   itens_genres    itens_genres[]
   itens_platforms itens_platforms[]
   itens_status    itens_status[]
@@ -23,7 +23,7 @@ model itens {
 
 model itens_genres {
   id       Int    @id @default(autoincrement())
-  id_item  Int
+  id_item  Int    @unique
   id_genre Int
   genres   genres @relation(fields: [id_genre], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_genre")
   itens    itens  @relation(fields: [id_item], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_item")
@@ -31,7 +31,7 @@ model itens_genres {
 
 model itens_platforms {
   id          Int       @id @default(autoincrement())
-  id_item     Int
+  id_item     Int       @unique
   id_platform Int
   itens       itens     @relation(fields: [id_item], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_item")
   platforms   platforms @relation(fields: [id_platform], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_platform")
@@ -39,7 +39,7 @@ model itens_platforms {
 
 model itens_status {
   id        Int    @id @default(autoincrement())
-  id_item   Int
+  id_item   Int    @unique
   id_status Int
   status    status @relation(fields: [id_status], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_genre")
   itens     itens  @relation(fields: [id_item], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_item")
