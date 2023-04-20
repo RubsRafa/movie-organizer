@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import itensServices from "../services/itensServices";
 import httpStatus from "http-status";
-import { AddItemType, IdType, ItensFormat } from "../protocols/itensProtocols";
+import { AddItemType, DataParams, IdType } from "../protocols/itensProtocols";
 
 async function listAllItens(req: Request, res: Response, next: NextFunction) {
     try {
-        const allItens = await itensServices.listAllItens();
+        const allItens: DataParams[] = await itensServices.listAllItens();
         return res.status(httpStatus.OK).send(allItens)
         
     } catch (err) {
@@ -17,11 +17,10 @@ async function postItem(req: Request, res: Response, next: NextFunction) {
     const { name, genre, platform, status } = req.body as AddItemType;
  
     try {
-        const itemAdded = await itensServices.postItem({ name, genre, platform, status });
+        const itemAdded: DataParams = await itensServices.postItem({ name, genre, platform, status });
         return res.status(httpStatus.CREATED).send(itemAdded);
         
     } catch (err) {
-        console.log(err)
         next(err);
     }
 }
@@ -32,7 +31,7 @@ async function updateItem(req: Request, res: Response, next: NextFunction) {
 
     try {
 
-        const itemUpdated = await itensServices.updateItem({ id, status });
+        const itemUpdated: DataParams = await itensServices.updateItem({ id, status });
         return res.status(httpStatus.OK).send(itemUpdated);
         
     } catch (err) {

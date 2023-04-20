@@ -19,7 +19,7 @@ describe('GET /itens', () => {
 
     it('should respond with empty array if no itens', async () => {
         const results = await api.get('/itens');
-        console.log('primeiro get, sem itens', results.body)
+        
         expect(results.status).toBe(200);
 
         expect(results.body).toEqual([])

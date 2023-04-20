@@ -1,7 +1,8 @@
+import { itens, itens_status } from "@prisma/client";
 import prisma from "../database/db";
 import { AddItemType, DataParams } from "../protocols/itensProtocols";
 
-async function listAllItens() {
+async function listAllItens(): Promise<DataParams[]> {
   let data: DataParams[];
   await prisma.itens.findMany({
     include: {
@@ -50,7 +51,7 @@ async function listAllItens() {
 
 }
 
-async function postItem({ name }: AddItemType) {
+async function postItem({ name }: AddItemType): Promise<itens> {
   return prisma.itens.create({
     data: {
       name
@@ -58,7 +59,7 @@ async function postItem({ name }: AddItemType) {
   })
 }
 
-async function findItemByName({ name }: AddItemType) {
+async function findItemByName({ name }: AddItemType): Promise<itens> {
   return prisma.itens.findUnique({
     where: {
       name
@@ -66,10 +67,9 @@ async function findItemByName({ name }: AddItemType) {
   })
 }
 
-async function addItemInfo({ id, genre, platform, status }: AddItemType) {
+async function addItemInfo({ id, genre, platform, status }: AddItemType): Promise<string> {
   const id_item = Number(id)
   
-  console.log('vai add info do item', id_item, typeof(id_item), genre, typeof(genre), platform, typeof(platform), status, typeof(status))
   await prisma.itens_genres.create({
     data:{
       id_item, id_genre: genre
@@ -91,7 +91,7 @@ async function addItemInfo({ id, genre, platform, status }: AddItemType) {
   return 'sair do add info';
 }
 
-async function findItem({ id }: AddItemType) {
+async function findItem({ id }: AddItemType): Promise<DataParams> {
   let data: DataParams;
   const id_item = Number(id);
   return prisma.itens.findFirst({
@@ -141,7 +141,7 @@ async function findItem({ id }: AddItemType) {
   });
 }
 
-async function updateItem({ id, status }: AddItemType) {
+async function updateItem({ id, status }: AddItemType): Promise<itens_status> {
   const id_item = Number(id);
   return prisma.itens_status.update({
     where: {
@@ -153,7 +153,7 @@ async function updateItem({ id, status }: AddItemType) {
   })
 }
 
-async function deleteItem ({ id }: AddItemType) {
+async function deleteItem ({ id }: AddItemType): Promise<itens> {
   const id_item = Number(id)
   return prisma.itens.delete({
     where: {
