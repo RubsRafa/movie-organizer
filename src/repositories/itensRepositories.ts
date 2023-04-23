@@ -162,6 +162,15 @@ async function deleteItem ({ id }: AddItemType): Promise<itens> {
   })
 }
 
+async function findItemById({ id }) {
+  const id_item = Number(id);
+  return prisma.itens.findFirst({
+    where: {
+      id: id_item
+    }
+  })
+}
+
 export default {
   listAllItens,
   postItem,
@@ -169,5 +178,6 @@ export default {
   findItem,
   findItemByName,
   updateItem,
-  deleteItem
+  deleteItem,
+  findItemById
 }

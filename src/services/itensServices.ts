@@ -27,8 +27,9 @@ async function postItem({ name, genre, platform, status }: AddItemType): Promise
 }
 
 async function updateItem({ id, status }: AddItemType): Promise<DataParams> {
-    const itemExist: DataParams = await itensRepositories.findItem({ id });
-    if (!itemExist) throw errors.notFoundError('This item was not found');
+    const item = await itensRepositories.findItemById({ id });
+    
+    if (!item || item === null) throw errors.notFoundError('This item was not found');
 
     await itensRepositories.updateItem({ id, status });
 
@@ -38,8 +39,8 @@ async function updateItem({ id, status }: AddItemType): Promise<DataParams> {
 }
 
 async function deleteItem({ id } : AddItemType): Promise<void> {
-    const itemExist: DataParams = await itensRepositories.findItem({ id });
-    if (!itemExist) throw errors.notFoundError('This item was not found');
+    const item = await itensRepositories.findItemById({ id });
+    if (!item) throw errors.notFoundError('This item was not found');
 
     await itensRepositories.deleteItem({ id });
 }
