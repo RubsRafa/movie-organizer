@@ -1,9 +1,7 @@
 import "typescript-transform-paths";
 import supertest from "supertest";
 import app from '../src/app';
-import prisma from '../src/database/db';
-import { ItensSchema } from "protocols/itensProtocols";
-import { createGenre, createGenreItemRelation, createItem, createPlatform, createPlatformItemRelation, createStatus, createStatusItemRelation, deleteItem } from "./factories/itens-factory";
+import { createGenre, createPlatform, createStatus } from "./factories/itens-factory";
 import { cleanDb } from "./helpers";
 
 const api = supertest(app);
