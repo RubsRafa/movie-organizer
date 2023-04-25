@@ -29,7 +29,7 @@ async function postItem({ name, genre, platform, status }: AddItemType): Promise
 async function updateItem({ id, status }: AddItemType): Promise<DataParams> {
     const item = await itensRepositories.findItemById({ id });
     
-    if (!item || item === null) throw errors.notFoundError('This item was not found');
+    if (!item) throw errors.notFoundError('This item was not found');
 
     await itensRepositories.updateItem({ id, status });
 

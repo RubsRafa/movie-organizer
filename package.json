@@ -6,6 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "test": "dotenv -e .env.test -- jest --passWithNoTests --runInBand",
+    "test:coverage": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --coverage --collectCoverageFrom='./src/**'",
     "start": "node src/server.js",
     "dev": "npx nodemon src/server.ts",
     "prisma:seed": "npx prisma db seed"
