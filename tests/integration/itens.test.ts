@@ -1,8 +1,9 @@
 import "typescript-transform-paths";
 import supertest from "supertest";
-import app from '../src/app';
-import { createGenre, createPlatform, createStatus } from "./factories/itens-factory";
-import { cleanDb } from "./helpers";
+import app from '../../src/app';
+import { createBodyToSend, createGenre, createItem, createItemGenreRelation, createItemPlatformRelation, createItemStatusRelation, createPlatform, createStatus } from "../factories/itens-factory";
+import { cleanDb } from "../helpers";
+import { faker } from "@faker-js/faker";
 
 const api = supertest(app);
 
@@ -26,7 +27,7 @@ describe('POST /itens', () => {
 
     it('should respond status 409 if invalid body', async () => {
         const body = {
-            "name": "Barbie"
+            name: faker.commerce.productName(),
         }
 
         const response = await api.post('/itens').send(body);
@@ -37,16 +38,23 @@ describe('POST /itens', () => {
     });
 
     it('should respond status 409 if item already exists', async () => {
-        const body = {
-            "name": "Barbie"
-        }
+        const genre = await createGenre();
+        const platform = await createPlatform();
+        const status = await createStatus('Watching');
 
-        await api.post('/itens').send(body);
+        const item = await createItem();
+        await createItemGenreRelation(item.id, genre.id);
+        await createItemPlatformRelation(item.id, platform.id);
+        await createItemStatusRelation(item.id, status.id);
+
+        const body = await createBodyToSend(genre.id, platform.id, status.id, item.name)
+
+
         const response = await api.post('/itens').send(body);
 
         expect(response.status).toBe(409);
         expect(response.body).toEqual({
-            "message": expect.any(Array)
+            "message": "This item was already added"
         })
     });
 
@@ -55,19 +63,14 @@ describe('POST /itens', () => {
         const platform = await createPlatform();
         const status = await createStatus('Watching');
 
-        const body = {
-            "name": "Barbie",
-            "genre": genre.id,
-            "platform": platform.id,
-            "status": status.id
-        }
+        const body = await createBodyToSend(genre.id, platform.id, status.id);
 
         const response = await api.post('/itens').send(body);
 
         expect(response.status).toBe(201);
         expect(response.body).toEqual({
             "id": expect.any(Number),
-            "name": "Barbie",
+            "name": body.name,
             "genre": genre.genre,
             "platform": platform.name,
             "status": status.status
@@ -95,19 +98,14 @@ describe('PUT /itens/:id', () => {
         const platform = await createPlatform();
         const status = await createStatus('Watching');
 
-        const body = {
-            "name": "Barbie",
-            "genre": genre.id,
-            "platform": platform.id,
-            "status": status.id
-        }
+        const body = await createBodyToSend(genre.id, platform.id, status.id)
 
         const response = await api.post('/itens').send(body);
 
         expect(response.status).toBe(201);
         expect(response.body).toEqual({
             "id": expect.any(Number),
-            "name": "Barbie",
+            "name": body.name,
             "genre": genre.genre,
             "platform": platform.name,
             "status": status.status
@@ -131,12 +129,7 @@ describe('DELETE /itens/:id', () => {
         const platform = await createPlatform();
         const status = await createStatus('Watching');
 
-        const body = {
-            "name": "Barbie",
-            "genre": genre.id,
-            "platform": platform.id,
-            "status": status.id
-        }
+        const body = await createBodyToSend(genre.id, platform.id, status.id)
 
         const results = await api.post('/itens').send(body);
         const response = await api.delete(`/itens/${results.body.id}`);

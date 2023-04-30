@@ -16,7 +16,6 @@ async function postItem({ name, genre, platform, status }: AddItemType): Promise
     await itensRepositories.postItem({ name });
     
     const item: itens = await itensRepositories.findItemByName({ name });
-    if (!item) throw errors.notFoundError('This item id was not found');
     
     await itensRepositories.addItemInfo({ id: item.id, genre, platform, status });
     
