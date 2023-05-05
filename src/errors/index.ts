@@ -1,4 +1,4 @@
-function conflictError(message: string | string[]) {
+function conflictError(message: string) {
     return {
         name: "ConflictError",
         message
@@ -12,7 +12,15 @@ function notFoundError(message: string) {
     };
 };
 
+function conflictErrorValidationSchema(message: string | string[]) {
+    return {
+        name: "ConflictError",
+        message
+    }
+};
+
 export default {
     conflictError,
     notFoundError,
+    conflictErrorValidationSchema,
 }

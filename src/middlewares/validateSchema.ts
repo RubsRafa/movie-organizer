@@ -10,7 +10,7 @@ export function validateSchema(schema: Schema) {
 
         if (error) {
             const errors: string[] = error.details.map((d) => d.message);
-            throw err.conflictError(errors);
+            throw err.conflictErrorValidationSchema(errors);
         
         }
         next();
